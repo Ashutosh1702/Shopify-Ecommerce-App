@@ -1,4 +1,4 @@
-# E-Commerce Web Application
+# Shopify-Ecommerce-App
 
 A modern, full-stack e-commerce platform built with React.js, featuring a responsive design and comprehensive shopping experience.
 
