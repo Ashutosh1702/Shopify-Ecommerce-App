@@ -1,6 +1,6 @@
-# Shopify-Ecommerce-App
+# E-Commerce Web Application
 
-A modern e-commerce application built with React and Vite, featuring a comprehensive shopping experience with product management, cart functionality, and secure payment processing.
+A modern, full-stack e-commerce platform built with React.js, featuring a responsive design and comprehensive shopping experience.
 
 ![E-Commerce App](path-to-your-screenshot.png)
 
