@@ -1,14 +1,43 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import "./Navbar.css"
 import logo from "../assets/images/images.png"
 import cart_icon from "../assets/images/cart_icon.png"
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { ShopContext } from './Context/ShopContext'
 
 function Navbar() {
   const [menu, setMenu] = useState("home");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
   const {getTotalCartItems} = useContext(ShopContext)
+
+  useEffect(() => {
+    // Check if user is logged in
+    const userData = localStorage.getItem('user');
+    if (userData) {
+      setUser(JSON.parse(userData));
+    }
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      const response = await fetch("http://localhost:3000/api/auth/logout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        localStorage.removeItem('user');
+        setUser(null);
+        navigate('/');
+      }
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
+  };
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
@@ -47,7 +76,14 @@ function Navbar() {
       </ul>
 
       <div className="nav-login-cart">
-        <Link to="/login"><button>Login</button></Link>
+        {user ? (
+          <div className="user-section">
+            <span className="username">Welcome, {user.username}</span>
+            <button onClick={handleLogout} className="logout-btn">Logout</button>
+          </div>
+        ) : (
+          <Link to="/login"><button>Login</button></Link>
+        )}
         <Link to="/cart"><img src={cart_icon} alt="" height="40px"/></Link>
         <div className="nav-cart-count">{getTotalCartItems()}</div>
       </div>
